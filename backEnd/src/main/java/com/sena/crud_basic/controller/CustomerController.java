@@ -2,7 +2,7 @@ package com.sena.crud_basic.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sena.crud_basic.model.customer;
+import com.sena.crud_basic.model.Customer;
 import com.sena.crud_basic.service.CustomerService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ public class CustomerController {
     //método para crear un registro POST
     @PostMapping("/")
     public String registerCustomer(
-        @RequestBody customer customer
+        @RequestBody Customer customer
         ){
             customerService.save(customer);
         return "register ok";

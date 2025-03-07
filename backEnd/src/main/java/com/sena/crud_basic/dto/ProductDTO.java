@@ -1,36 +1,18 @@
-package com.sena.crud_basic.model;
+package com.sena.crud_basic.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class ProductDTO {
 
-@Entity
-@Table(name = "Productos") // Nombre de la tabla en la base de datos
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Producto")
     private int id_Producto;
-
-    @Column(name = "Nombre", nullable = false, length = 100)
     private String nombre_Producto;
-
-    @Column(name = "Precio", nullable = false)
     private int monto;
-
-    @Column(name = "Stock", nullable = false)
     private int stock;
 
-    // Constructor vacío (necesario para JPA)
-    public Product() {
+    // Constructor vacío
+    public ProductDTO() {
     }
 
     // Constructor con todos los campos
-    public Product(int id_Producto, String nombre_Producto, int monto, int stock) {
+    public ProductDTO(int id_Producto, String nombre_Producto, int monto, int stock) {
         this.id_Producto = id_Producto;
         this.nombre_Producto = nombre_Producto;
         this.monto = monto;
@@ -72,7 +54,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "ProductDTO{" +
                 "id_Producto=" + id_Producto +
                 ", nombre_Producto='" + nombre_Producto + '\'' +
                 ", monto=" + monto +

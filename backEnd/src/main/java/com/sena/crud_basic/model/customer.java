@@ -1,75 +1,61 @@
 package com.sena.crud_basic.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.Objects;
 
-/*
- * Para indicar que la clase es un modelo, se utiliza
- * la anotación bean @Entity
- * name=El nombre de la entidad en la base de datos
- */
-@Entity(name = "Cliente")
-public class customer {
-    /*
-     * DTO= Data Transfer Object
-     * las clases DTO contienen las entidades de la base
-     * de datos
-     */
-    // id=PRIMARY KEY
-    // GeneratedValue=Auto incremental
-    // @Column=para indicar que el atributo es una columna
+@Entity
+@Table(name = "Clientes")
+public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Cliente", nullable = false)
-    private int id_customer;
+    private int idCliente;
 
-    @Column(name = "Nombre", length = 50)
+    @Column(name = "Nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "Correo_Electronico", length = 60)
-    private String correoElectronico;
+    @Column(name = "Direccion", nullable = false, length = 200)
+    private String direccion;
 
-    @Column(name = "Telefono", length = 60)
+    @Column(name = "Telefono", nullable = false, length = 15)
     private String telefono;
 
-    // Constructor vacío (necesario para JPA)
-    public customer() {
+    // Constructor vacío
+    public Customer() {
     }
 
     // Constructor con todos los campos
-    public customer(int id_customer, String nombre, String correoElectronico, String telefono) {
-        this.id_customer = id_customer;
+    public Customer(int idCliente, String nombre, String direccion, String telefono) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
-        this.correoElectronico = correoElectronico;
+        this.direccion = direccion;
         this.telefono = telefono;
     }
 
     // Getters y Setters
-    public int getId_customer() {
-        return id_customer;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setId_customer(int id_customer) {
-        this.id_customer = id_customer;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {  // Corregido: el parámetro debe ser de tipo String
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public String getTelefono() {
@@ -80,38 +66,29 @@ public class customer {
         this.telefono = telefono;
     }
 
-    // Método toString
     @Override
     public String toString() {
-        return "customerDTO{" +
-                "id_customer=" + id_customer +
+        return "Customer{" +
+                "idCliente=" + idCliente +
                 ", nombre='" + nombre + '\'' +
-                ", correoElectronico='" + correoElectronico + '\'' +
+                ", direccion='" + direccion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 '}';
     }
 
-    // Método equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        customer that = (customer) o;
-
-        if (id_customer != that.id_customer) return false;
-        if (!nombre.equals(that.nombre)) return false;
-        if (!correoElectronico.equals(that.correoElectronico)) return false;
-        return telefono.equals(that.telefono);
+        Customer customer = (Customer) o;
+        return idCliente == customer.idCliente &&
+                Objects.equals(nombre, customer.nombre) &&
+                Objects.equals(direccion, customer.direccion) &&
+                Objects.equals(telefono, customer.telefono);
     }
 
-    // Método hashCode
     @Override
     public int hashCode() {
-        int result = id_customer;
-        result = 31 * result + nombre.hashCode();
-        result = 31 * result + correoElectronico.hashCode();
-        result = 31 * result + telefono.hashCode();
-        return result;
+        return Objects.hash(idCliente, nombre, direccion, telefono);
     }
 }

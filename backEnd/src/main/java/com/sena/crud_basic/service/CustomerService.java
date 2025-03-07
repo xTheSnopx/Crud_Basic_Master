@@ -3,8 +3,8 @@ package com.sena.crud_basic.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.sena.crud_basic.repository.ICustomerRepository;
-import com.sena.crud_basic.model.customer;
+import com.sena.crud_basic.repository.CustomerRepository;
+import com.sena.crud_basic.model.Customer;
 
 /*
  * Agregamos la anotación bean @Service
@@ -15,7 +15,7 @@ public class CustomerService{
 
     //se realiza la conexión con el repositorio
     @Autowired
-    private ICustomerRepository ICustomerRepository;
+    private CustomerRepository ICustomerRepository;
 
     /*
      * crear
@@ -31,15 +31,15 @@ public class CustomerService{
 
 
 
-    public List<customer> getAllCustomer(){
+    public List<Customer> getAllCustomer(){
         return ICustomerRepository.findAll();
     }
 
-    public customer getCustomerById(int id){
+    public Customer getCustomerById(int id){
         return ICustomerRepository.findById(id).get();
     }
 
-    public boolean save(customer customer){
+    public boolean save(Customer customer){
         /*
          * if(customer.getId==0)register or create
          * else update
