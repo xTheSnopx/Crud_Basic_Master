@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Buena Mesa - Restaurante & Cafetería</title>
+    <style>
+        :root {
+            --primary: #d35400;
+            --secondary: #8d4004;
+            --accent: #2ecc71;
+            --light: #f9f9f9;
+            --dark: #333;
+            --coffee: #6f4e37;
+            --dessert: #ff9ff3;
+            --text: #2d3436;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(211, 84, 0, 0.95);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-links a.active {
+            color: var(--accent);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: -5px;
+            left: 25%;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/api/placeholder/1400/800');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        section {
+            padding: 5rem 0;
+        }
+        
+        section:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        
+        .about {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .about-img {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem;
+        }
+        
+        .about-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .about-content {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -10px;
+            left: 25%;
+        }
+        
+        .section-title p {
+            color: #777;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .menu-tab {
+            padding: 0.8rem 1.5rem;
+            background-color: white;
+            color: var(--text);
+            margin: 0.5rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .menu-tab:hover {
+            color: var(--primary);
+        }
+        
+        .menu-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .menu-section {
+            display: none;
+        }
+        
+        .menu-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.1);
+        }
+        
+        .menu-item-content {
+            padding: 1.5rem;
+        }
+        
+        .menu-item-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .menu-item-content p {
+            color: #777;
+            margin-bottom: 1rem;
+        }
+        
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        
+        .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .add-to-cart {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--primary);
+        }
+        
+        .coffee-section .menu-item {
+            border-top: 4px solid var(--coffee);
+        }
+        
+        .desserts-section .menu-item {
+            border-top: 4px solid var(--dessert);
+        }
+        
+        .testimonials {
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .testimonial-slide {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .testimonial-quote {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: #ddd;
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            opacity: 0.5;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .testimonial-nav {
+            margin-top: 2rem;
+        }
+        
+        .testimonial-nav button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-nav button:hover {
+            background-color: var(--secondary);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .gallery-item {
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+        }
+        
+        .contact-info h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .contact-details p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-details p span {
+            margin-right: 1rem;
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(211, 84, 0, 0.2);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            padding: 1rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p {
+            margin-bottom: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #555;
+            color: white;
+            border-radius: 50%;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+        
+        .opening-hours li {
+            margin-bottom: 0.8rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                background-color: var(--primary);
+                width: 80%;
+                height: calc(100vh - 70px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .btn-secondary {
+                margin-left: 0.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .btn-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                margin-bottom: 1rem;
+                width: 200px;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .contact-info, .contact-form {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header con navegación -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    La Buena <span>Mesa</span>
+                </div>
+                <div class="mobile-toggle" id="mobileToggle">☰</div>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#galeria">Galería</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Sabores que <span style="color: var(--accent);">cautivan</span> los sentidos</h1>
+            <p>Un espacio único donde la tradición culinaria se combina con la innovación para ofrecerte una experiencia gastronómica inolvidable.</p>
+            <div class="btn-container">
+                <a href="#menu" class="btn">Ver Menú</a>
+                <a href="#contacto" class="btn btn-secondary">Reservar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosotros section -->
+    <section id="nosotros">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestra Historia</h2>
+                <p>Conoce un poco más sobre nosotros y nuestra pasión por la cocina</p>
+            </div>
+            <div class="about">
+                <div class="about-img">
+                    <img src="/api/placeholder/600/400" alt="Restaurante La Buena Mesa">
+                </div>
+                <div class="about-content">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.8rem;">Tradición e innovación</h3>
+                    <p>Desde nuestra apertura en 2010, <strong>La Buena Mesa</strong> ha sido sinónimo de excelencia culinaria. Lo que comenzó como un pequeño restaurante familiar se ha convertido en un referente gastronómico de la ciudad.</p>
+                    <p style="margin: 1rem 0;">Nuestro chef ejecutivo, con más de 20 años de experiencia, ha creado un menú que combina recetas tradicionales con técnicas modernas, ofreciendo platos que sorprenden por su sabor y presentación.</p>
+                    <p>En La Buena Mesa nos preocupamos por utilizar ingredientes frescos y de temporada, apoyando a productores locales y garantizando la máxima calidad en cada plato.</p>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">¿Qué nos hace diferentes?</h4>
+                        <ul style="padding-left: 1.2rem;">
+                            <li>Ingredientes frescos y de calidad superior</li>
+                            <li>Ambiente acogedor y elegante</li>
+                            <li>Servicio excepcional y personalizado</li>
+                            <li>Variedad gastronómica para todos los gustos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu section -->
+    <section id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestro Menú</h2>
+                <p>Descubre nuestra amplia selección de platos preparados con pasión e ingredientes de primera calidad</p>
+            </div>
+            
+            <div class="menu-tabs">
+                <div class="menu-tab active" data-target="entradas">Entradas</div>
+                <div class="menu-tab" data-target="principales">Platos Principales</div>
+                <div class="menu-tab" data-target="cafe">Cafetería</div>
+                <div class="menu-tab" data-target="postres">Postres</div>
+                <div class="menu-tab" data-target="bebidas">Bebidas</div>
+            </div>
+            
+            <!-- Entradas Section -->
+            <div class="menu-section entradas-section active" id="entradas-section">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Carpaccio de Res">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Carpaccio de Res</h3>
+                            <p>Finas láminas de res marinadas con aceite de oliva, limón, alcaparras y queso parmesano.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$12.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Bruschettas Mixtas">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Bruschettas Mixtas</h3>
+                            <p>Selección de bruschettas con tomate y albahaca, hongos salteados y queso de cabra.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$9.90</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Calamares Fritos">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Calamares Fritos</h3>
+                            <p>Calamares frescos rebozados en harina de maíz, acompañados de salsa alioli de limón.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$11.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Ensalada Mediterránea">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Ensalada Mediterránea</h3>
+                            <p>Mix de lechugas, tomate cherry, pepino, aceitunas, queso feta y aderezo de yogurt.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$10.90</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Platos Principales Section -->
+            <div class="menu-section principales-section" id="principales-section">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Risotto de Hongos">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Risotto de Hongos</h3>
+                            <p>Arroz arborio cocido lentamente con hongos silvestres, vino blanco y queso parmesano.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$18.90</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Lomo Saltado">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Lomo Saltado</h3>
+                            <p>Tiras de lomo fino salteadas con cebolla, tomate y especias, acompañadas de papas fritas y arroz.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$22.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Salmón a la Parrilla">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Salmón a la Parrilla</h3>
+                            <p>Filete de salmón fresco a la parrilla con salsa de eneldo, acompañado de puré de papa y vegetales.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$24.90</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item">
+                            <div class="menu-item-img">
+                                <img src="/api/placeholder/400/300" alt="Pasta Carbonara">
+                            </div>
+                            <div class="menu-item-content">
+                                <h3>Pasta Carbonara</h3>
+                                <p>Spaghetti con salsa cremosa de huevo, queso parmesano, panceta crujiente y pimienta negra.</p>
+                                <div class="menu-item-footer">
+                                    <div class="price">$16.90</div>
+                                    <button class="add-to-cart">Ordenar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cafetería Section -->
+            <div class="menu-section cafe-section" id="cafe-section">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Café Espresso">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Café Espresso</h3>
+                            <p>Un shot intenso de café recién molido, perfecto para los amantes del café fuerte.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$3.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Cappuccino">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Cappuccino</h3>
+                            <p>Espresso combinado con leche vaporizada y una suave capa de espuma de leche.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$4.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Latte Macchiato">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Latte Macchiato</h3>
+                            <p>Leche vaporizada con un toque de espresso, creando capas visualmente atractivas.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$5.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Té de Hierbas">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Té de Hierbas</h3>
+                            <p>Selección de tés de hierbas naturales, perfectos para relajarse.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$3.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Postres Section -->
+            <div class="menu-section postres-section" id="postres-section">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Tiramisú">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Tiramisú</h3>
+                            <p>Postre italiano clásico con capas de bizcocho de café, crema de mascarpone y cacao.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$7.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Cheesecake de Frutos Rojos">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Cheesecake de Frutos Rojos</h3>
+                            <p>Cheesecake cremoso con una base de galleta, cubierto con salsa de frutos rojos.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$8.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Brownie con Helado">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Brownie con Helado</h3>
+                            <p>Brownie de chocolate caliente acompañado de una bola de helado de vainilla.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$6.90</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Profiteroles">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Profiteroles</h3>
+                            <p>Pequeños bollos rellenos de crema pastelera y cubiertos con chocolate fundido.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$7.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bebidas Section -->
+            <div class="menu-section bebidas-section" id="bebidas-section">
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Jugo Natural">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Jugo Natural</h3>
+                            <p>Jugo fresco de naranja, piña o maracuyá, preparado al momento.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$4.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Limonada de Hierbabuena">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Limonada de Hierbabuena</h3>
+                            <p>Refrescante limonada con un toque de hierbabuena, perfecta para días calurosos.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$4.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Cerveza Artesanal">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Cerveza Artesanal</h3>
+                            <p>Selección de cervezas artesanales locales, con sabores únicos.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$5.50</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-img">
+                            <img src="/api/placeholder/400/300" alt="Vino Tinto">
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Vino Tinto</h3>
+                            <p>Selección de vinos tintos de la mejor cosecha, ideal para acompañar tus platos.</p>
+                            <div class="menu-item-footer">
+                                <div class="price">$8.00</div>
+                                <button class="add-to-cart">Ordenar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería Section -->
+    <section id="galeria">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galería</h2>
+                <p>Un vistazo a nuestro ambiente y platos más destacados</p>
+            </div>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Ambiente del Restaurante">
+                </div>
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Plato Principal">
+                </div>
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Postres">
+                </div>
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Cafetería">
+                </div>
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Barra de Bebidas">
+                </div>
+                <div class="gallery-item">
+                    <img src="/api/placeholder/400/300" alt="Eventos Especiales">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto Section -->
+    <section id="contacto">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contacto</h2>
+                <p>Estamos aquí para atenderte. ¡Escríbenos o visítanos!</p>
+            </div>
+            <div class="contact">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="contact-details">
+                        <p>
+                            <span>📍</span>
+                            Av. Principal 123, Ciudad, País
+                        </p>
+                        <p>
+                            <span>📞</span>
+                            +123 456 7890
+                        </p>
+                        <p>
+                            <span>✉️</span>
+                            info@labuenamesa.com
+                        </p>
+                    </div>
+                    <h3 style="margin-top: 2rem;">Horario de Atención</h3>
+                    <ul class="opening-hours">
+                        <li>Lunes - Viernes <span>12:00 - 22:00</span></li>
+                        <li>Sábado <span>11:00 - 23:00</span></li>
+                        <li>Domingo <span>11:00 - 20:00</span></li>
+                    </ul>
+                </div>
+                <div class="contact-form">
+                    <h3>Envíanos un Mensaje</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensaje:</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>La Buena Mesa</h3>
+                    <p>Un lugar donde los sabores se encuentran con la tradición y la innovación. ¡Te esperamos!</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#galeria">Galería</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">📘</a>
+                        <a href="#" aria-label="Instagram">📸</a>
+                        <a href="#" aria-label="Twitter">🐦</a>
+                        <a href="#" aria-label="YouTube">📺</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 La Buena Mesa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón para volver al inicio -->
+    <a href="#inicio" class="back-to-top" id="backToTop">↑</a>
+
+    <!-- Scripts -->
+    <script>
+        // Script para el menú móvil
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Script para el botón de volver al inicio
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+
+        // Script para las pestañas del menú
+        const menuTabs = document.querySelectorAll('.menu-tab');
+        const menuSections = document.querySelectorAll('.menu-section');
+
+        menuTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-target');
+                menuTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                menuSections.forEach(section => {
+                    if (section.id === `${target}-section`) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
