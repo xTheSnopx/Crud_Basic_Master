@@ -1,0 +1,2348 @@
+>
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Fusion Cuisine - Sistema de Gestión</title>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+            <script src="https://www.google.com/recaptcha/api.js?render=6LcoqyQrAAAAADLJV4a9Mt4Px9uNYnyPW5PkGND4"></script>
+            <style>
+                :root {
+                    --primary-color: #3498db;
+                    --secondary-color: #e74c3c;
+                    --accent-color: #f39c12;
+                    --dark-color: #2c3e50;
+                    --light-color: #ecf0f1;
+                    --success-color: #2ecc71;
+                    --warning-color: #f1c40f;
+                    --danger-color: #e74c3c;
+                    --info-color: #3498db;
+                    --text-color: #34495e;
+                    --bg-color: #f5f7fa;
+                    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    --box-shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+                    --transition: all 0.3s ease;
+                    --border-radius: 8px;
+                    --input-bg: rgba(255, 255, 255, 0.8);
+                }
+        
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+        
+                body {
+                    background-color: var(--bg-color);
+                    color: var(--text-color);
+                    min-height: 100vh;
+                    position: relative;
+                    line-height: 1.6;
+                    overflow-x: hidden;
+                }
+        
+                /* Animaciones */
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+        
+                @keyframes slideUp {
+                    from { transform: translateY(30px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+        
+                @keyframes slideDown {
+                    from { transform: translateY(-30px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+        
+                @keyframes slideInRight {
+                    from { transform: translateX(30px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+        
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+        
+                @keyframes shimmer {
+                    0% { background-position: -1000px 0; }
+                    100% { background-position: 1000px 0; }
+                }
+        
+                .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+                .animate-slideUp { animation: slideUp 0.5s ease-out forwards; }
+                .animate-slideDown { animation: slideDown 0.5s ease-out forwards; }
+                .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
+                .animate-pulse { animation: pulse 2s infinite; }
+        
+                .skeleton {
+                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                    background-size: 1000px 100%;
+                    animation: shimmer 2s infinite;
+                    border-radius: var(--border-radius);
+                }
+        
+                /* Layout */
+                .d-flex { display: flex; }
+                .justify-between { justify-content: space-between; }
+                .justify-center { justify-content: center; }
+                .align-center { align-items: center; }
+                .flex-column { flex-direction: column; }
+                .flex-wrap { flex-wrap: wrap; }
+                .flex-grow { flex-grow: 1; }
+                .gap-1 { gap: 0.5rem; }
+                .gap-2 { gap: 1rem; }
+                .gap-3 { gap: 1.5rem; }
+                .mt-1 { margin-top: 0.5rem; }
+                .mt-2 { margin-top: 1rem; }
+                .mt-3 { margin-top: 1.5rem; }
+                .mt-4 { margin-top: 2rem; }
+                .mb-1 { margin-bottom: 0.5rem; }
+                .mb-2 { margin-bottom: 1rem; }
+                .mb-3 { margin-bottom: 1.5rem; }
+                .mb-4 { margin-bottom: 2rem; }
+                .mx-auto { margin-left: auto; margin-right: auto; }
+                .p-1 { padding: 0.5rem; }
+                .p-2 { padding: 1rem; }
+                .p-3 { padding: 1.5rem; }
+                .p-4 { padding: 2rem; }
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .w-100 { width: 100%; }
+                .h-100 { height: 100%; }
+                .position-relative { position: relative; }
+                .d-none { display: none; }
+                .overflow-hidden { overflow: hidden; }
+                .overflow-auto { overflow: auto; }
+        
+                /* Container */
+                .container {
+                    width: 100%;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 1rem;
+                }
+        
+                /* Navbar */
+                .navbar {
+                    background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+                    color: white;
+                    padding: 1rem;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 1000;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+        
+                .navbar-container {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+        
+                .logo {
+                    display: flex;
+                    align-items: center;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: white;
+                    text-decoration: none;
+                }
+        
+                .logo i {
+                    margin-right: 10px;
+                    font-size: 1.8rem;
+                    color: var(--accent-color);
+                }
+        
+                .nav-menu {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                }
+        
+                /* Sidebar */
+                .sidebar {
+                    position: fixed;
+                    top: 0;
+                    left: -300px;
+                    width: 260px;
+                    height: 100vh;
+                    background: linear-gradient(to bottom, var(--dark-color), #1a2530);
+                    color: white;
+                    z-index: 1001;
+                    transition: var(--transition);
+                    padding-top: 80px;
+                    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                    overflow-y: auto;
+                }
+        
+                .sidebar.active {
+                    left: 0;
+                }
+        
+                .sidebar-header {
+                    padding: 1.5rem;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    margin-bottom: 1rem;
+                }
+        
+                .sidebar-user {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 10px 1.5rem;
+                    margin-bottom: 1rem;
+                }
+        
+                .sidebar-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background-color: var(--accent-color);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+        
+                .sidebar-username {
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                }
+        
+                .sidebar-role {
+                    font-size: 0.75rem;
+                    opacity: 0.8;
+                    background-color: var(--accent-color);
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                }
+        
+                .nav-link {
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 1.5rem;
+                    color: rgba(255, 255, 255, 0.8);
+                    text-decoration: none;
+                    transition: var(--transition);
+                    border-left: 3px solid transparent;
+                }
+        
+                .nav-link:hover, .nav-link.active {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    color: white;
+                    border-left-color: var(--accent-color);
+                }
+        
+                .nav-link i {
+                    margin-right: 12px;
+                    width: 20px;
+                    text-align: center;
+                }
+        
+                .overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    z-index: 1000;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: var(--transition);
+                }
+        
+                .overlay.active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+        
+                /* Main Content */
+                .main-content {
+                    margin-top: 70px;
+                    padding: 2rem 1rem;
+                    min-height: calc(100vh - 70px);
+                    transition: var(--transition);
+                }
+        
+                .main-content.sidebar-active {
+                    margin-left: 260px;
+                }
+        
+                /* Buttons */
+                .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.5rem 1.25rem;
+                    border-radius: var(--border-radius);
+                    border: none;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    font-size: 0.95rem;
+                    text-decoration: none;
+                }
+        
+                .btn i {
+                    margin-right: 8px;
+                }
+        
+                .btn-sm {
+                    padding: 0.25rem 0.75rem;
+                    font-size: 0.85rem;
+                }
+        
+                .btn-lg {
+                    padding: 0.75rem 1.5rem;
+                    font-size: 1.1rem;
+                }
+        
+                .btn-primary {
+                    background-color: var(--primary-color);
+                    color: white;
+                }
+        
+                .btn-primary:hover {
+                    background-color: #2980b9;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-secondary {
+                    background-color: var(--secondary-color);
+                    color: white;
+                }
+        
+                .btn-secondary:hover {
+                    background-color: #c0392b;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-accent {
+                    background-color: var(--accent-color);
+                    color: white;
+                }
+        
+                .btn-accent:hover {
+                    background-color: #d35400;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-dark {
+                    background-color: var(--dark-color);
+                    color: white;
+                }
+        
+                .btn-dark:hover {
+                    background-color: #1a2530;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-light {
+                    background-color: var(--light-color);
+                    color: var(--dark-color);
+                }
+        
+                .btn-light:hover {
+                    background-color: #d0d3d4;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-success {
+                    background-color: var(--success-color);
+                    color: white;
+                }
+        
+                .btn-success:hover {
+                    background-color: #27ae60;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-warning {
+                    background-color: var(--warning-color);
+                    color: white;
+                }
+        
+                .btn-warning:hover {
+                    background-color: #f39c12;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-danger {
+                    background-color: var(--danger-color);
+                    color: white;
+                }
+        
+                .btn-danger:hover {
+                    background-color: #c0392b;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-info {
+                    background-color: var(--info-color);
+                    color: white;
+                }
+        
+                .btn-info:hover {
+                    background-color: #2980b9;
+                    transform: translateY(-2px);
+                    box-shadow: var(--box-shadow);
+                }
+        
+                .btn-outline {
+                    background-color: transparent;
+                    border: 1px solid currentColor;
+                }
+        
+                .btn-outline-primary {
+                    color: var(--primary-color);
+                    border-color: var(--primary-color);
+                }
+        
+                .btn-outline-primary:hover {
+                    background-color: var(--primary-color);
+                    color: white;
+                }
+        
+                .btn-icon {
+                    width: 38px;
+                    height: 38px;
+                    padding: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                }
+        
+                .btn-icon i {
+                    margin: 0;
+                    font-size: 1rem;
+                }
+        
+                /* Cards */
+                .card {
+                    background-color: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--box-shadow);
+                    overflow: hidden;
+                    transition: var(--transition);
+                    margin-bottom: 1.5rem;
+                }
+        
+                .card:hover {
+                    box-shadow: var(--box-shadow-hover);
+                    transform: translateY(-3px);
+                }
+        
+                .card-header {
+                    padding: 1.25rem 1.5rem;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    background-color: rgba(0, 0, 0, 0.01);
+                }
+        
+                .card-title {
+                    margin: 0;
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: var(--dark-color);
+                    display: flex;
+                    align-items: center;
+                }
+        
+                .card-title i {
+                    margin-right: 10px;
+                    color: var(--primary-color);
+                }
+        
+                .card-subtitle {
+                    margin-top: 0.25rem;
+                    font-size: 0.9rem;
+                    color: #777;
+                }
+        
+                .card-body {
+                    padding: 1.5rem;
+                }
+        
+                .card-footer {
+                    padding: 1rem 1.5rem;
+                    border-top: 1px solid rgba(0, 0, 0, 0.05);
+                    background-color: rgba(0, 0, 0, 0.01);
+                }
+        
+                /* Stats Cards */
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                    gap: 1.5rem;
+                    margin-bottom: 2rem;
+                }
+        
+                .stat-card {
+                    background-color: white;
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    box-shadow: var(--box-shadow);
+                    transition: var(--transition);
+                    position: relative;
+                    overflow: hidden;
+                }
+        
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: var(--box-shadow-hover);
+                }
+        
+                .stat-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 5px;
+                    height: 100%;
+                    background-color: var(--primary-color);
+                }
+        
+                .stat-card:nth-child(2)::before {
+                    background-color: var(--success-color);
+                }
+        
+                .stat-card:nth-child(3)::before {
+                    background-color: var(--warning-color);
+                }
+        
+                .stat-card:nth-child(4)::before {
+                    background-color: var(--info-color);
+                }
+        
+                .stat-icon {
+                    position: absolute;
+                    top: 1rem;
+                    right: 1rem;
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgba(52, 152, 219, 0.1);
+                    color: var(--primary-color);
+                    font-size: 1.5rem;
+                }
+        
+                .stat-card:nth-child(2) .stat-icon {
+                    background-color: rgba(46, 204, 113, 0.1);
+                    color: var(--success-color);
+                }
+        
+                .stat-card:nth-child(3) .stat-icon {
+                    background-color: rgba(241, 196, 15, 0.1);
+                    color: var(--warning-color);
+                }
+        
+                .stat-card:nth-child(4) .stat-icon {
+                    background-color: rgba(52, 152, 219, 0.1);
+                    color: var(--info-color);
+                }
+        
+                .stat-value {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    color: var(--dark-color);
+                }
+        
+                .stat-label {
+                    font-size: 0.9rem;
+                    color: #777;
+                    font-weight: 500;
+                }
+        
+                .stat-trend {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 0.5rem;
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                }
+        
+                .trend-up {
+                    color: var(--success-color);
+                }
+        
+                .trend-down {
+                    color: var(--danger-color);
+                }
+        
+                .trend-icon {
+                    margin-right: 5px;
+                }
+        
+                /* Forms */
+                .form-group {
+                    margin-bottom: 1.25rem;
+                }
+        
+                .form-label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 500;
+                    color: var(--dark-color);
+                }
+        
+                .form-control {
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: var(--border-radius);
+                    font-size: 1rem;
+                    transition: var(--transition);
+                    background-color: var(--input-bg);
+                }
+        
+                .form-control:focus {
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+                    outline: none;
+                }
+        
+                .input-group {
+                    position: relative;
+                }
+        
+                .input-icon {
+                    position: absolute;
+                    left: 1rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #777;
+                }
+        
+                .input-with-icon {
+                    padding-left: 2.75rem;
+                }
+        
+                .form-text {
+                    margin-top: 0.25rem;
+                    font-size: 0.85rem;
+                    color: #777;
+                }
+        
+                /* Tables */
+                .table-container {
+                    overflow-x: auto;
+                    margin-bottom: 1.5rem;
+                }
+        
+                .table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+        
+                .table th, .table td {
+                    padding: 0.75rem 1rem;
+                    text-align: left;
+                    border-bottom: 1px solid #eee;
+                }
+        
+                .table th {
+                    background-color: #f8f9fa;
+                    font-weight: 600;
+                    color: var(--dark-color);
+                }
+        
+                .table tbody tr {
+                    transition: var(--transition);
+                }
+        
+                .table tbody tr:hover {
+                    background-color: rgba(0, 0, 0, 0.015);
+                }
+        
+                .table-striped tbody tr:nth-child(odd) {
+                    background-color: rgba(0, 0, 0, 0.01);
+                }
+        
+                .table .actions {
+                    display: flex;
+                    gap: 0.5rem;
+                }
+        
+                /* Badges */
+                .badge {
+                    display: inline-block;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 20px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                }
+        
+                .badge-primary { background-color: var(--primary-color); color: white; }
+                .badge-secondary { background-color: var(--secondary-color); color: white; }
+                .badge-success { background-color: var(--success-color); color: white; }
+                .badge-warning { background-color: var(--warning-color); color: white; }
+                .badge-danger { background-color: var(--danger-color); color: white; }
+                .badge-info { background-color: var(--info-color); color: white; }
+                .badge-light { background-color: var(--light-color); color: var(--dark-color); }
+                .badge-dark { background-color: var(--dark-color); color: white; }
+        
+                /* Alerts */
+                .alert {
+                    padding: 1rem;
+                    border-radius: var(--border-radius);
+                    margin-bottom: 1.5rem;
+                    position: relative;
+                    animation: slideDown 0.3s ease-out forwards;
+                }
+        
+                .alert-primary { background-color: #d6e9f9; border-left: 4px solid var(--primary-color); color: #2573a7; }
+                .alert-secondary { background-color: #f8d7da; border-left: 4px solid var(--secondary-color); color: #a6333c; }
+                .alert-success { background-color: #d4edda; border-left: 4px solid var(--success-color); color: #155724; }
+                .alert-warning { background-color: #fff3cd; border-left: 4px solid var(--warning-color); color: #856404; }
+                .alert-danger { background-color: #f8d7da; border-left: 4px solid var(--danger-color); color: #721c24; }
+                .alert-info { background-color: #d1ecf1; border-left: 4px solid var(--info-color); color: #0c5460; }
+        
+                .alert-dismissible {
+                    padding-right: 4rem;
+                }
+        
+                .alert-dismissible .close {
+                    position: absolute;
+                    top: 50%;
+                    right: 1rem;
+                    transform: translateY(-50%);
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    line-height: 1;
+                    color: inherit;
+                    opacity: 0.5;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                }
+        
+                .alert-dismissible .close:hover {
+                    opacity: 1;
+                }
+        
+                /* Modals */
+                .modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1050;
+                    padding: 1rem;
+                    overflow-y: auto;
+                }
+        
+                .modal.active {
+                    display: flex;
+                }
+        
+                .modal-dialog {
+                    width: 100%;
+                    max-width: 500px;
+                    background-color: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                    overflow: hidden;
+                    transform: scale(0.9);
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                }
+        
+                .modal.active .modal-dialog {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+        
+                .modal-header {
+                    padding: 1.25rem 1.5rem;
+                    border-bottom: 1px solid #eee;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+        
+                .modal-title {
+                    margin: 0;
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: var(--dark-color);
+                }
+        
+                .modal-close {
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                    color: #777;
+                    cursor: pointer;
+                    transition: var(--transition);
+                }
+        
+                .modal-close:hover {
+                    color: var(--danger-color);
+                }
+        
+                .modal-body {
+                    padding: 1.5rem;
+                }
+        
+                .modal-footer {
+                    padding: 1rem 1.5rem;
+                    border-top: 1px solid #eee;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 0.75rem;
+                }
+        
+                /* Loaders */
+                .loader {
+                    display: inline-block;
+                    width: 30px;
+                    height: 30px;
+                    border: 3px solid rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    border-top-color: var(--primary-color);
+                    animation: spin 1s linear infinite;
+                }
+        
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+        
+                .loader-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 200px;
+                }
+        
+                /* Navigation Tabs */
+                .nav-tabs {
+                    display: flex;
+                    border-bottom: 1px solid #ddd;
+                    margin-bottom: 1.5rem;
+                }
+        
+                .nav-tab {
+                    padding: 0.75rem 1.25rem;
+                    border-bottom: 2px solid transparent;
+                    color: #777;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    font-weight: 500;
+                }
+        
+                .nav-tab:hover {
+                    color: var(--primary-color);
+                }
+        
+                .nav-tab.active {
+                    color: var(--primary-color);
+                    border-bottom-color: var(--primary-color);
+                }
+        
+                .tab-content {
+                    padding-top: 1rem;
+                }
+        
+                .tab-pane {
+                    display: none;
+                }
+        
+                .tab-pane.active {
+                    display: block;
+                    animation: fadeIn 0.3s ease-out;
+                }
+        
+                /* JWT Display */
+                .jwt-display {
+                    background-color: #f8f9fa;
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    margin-bottom: 1.5rem;
+                }
+        
+                .jwt-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1rem;
+                }
+        
+                .jwt-title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: var(--dark-color);
+                    display: flex;
+                    align-items: center;
+                }
+        
+                .jwt-title i {
+                    margin-right: 8px;
+                    color: var(--primary-color);
+                }
+        
+                .jwt-token {
+                    background-color: #272822;
+                    color: #f8f8f2;
+                    font-family: 'Courier New', monospace;
+                    padding: 1rem;
+                    border-radius: 5px;
+                    overflow-x: auto;
+                    margin-bottom: 1rem;
+                    white-space: pre-wrap;
+                    word-break: break-all;
+                }
+        
+                .jwt-part {
+                    margin-bottom: 1rem;
+                }
+        
+                .jwt-part-header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                    font-weight: 600;
+                }
+        
+                .jwt-part-content {
+                    background-color: #272822;
+                    color: #f8f8f2;
+                    font-family: 'Courier New', monospace;
+                    padding: 1rem;
+                    border-radius: 5px;
+                    overflow-x: auto;
+                }
+        
+                .jwt-part-header.header {
+                    color: #66d9ef;
+                }
+        
+                .jwt-part-header.payload {
+                    color: #a6e22e;
+                }
+        
+                .jwt-part-header.signature {
+                    color: #f92672;
+                }
+        
+                /* Login & Register */
+                .auth-container {
+                    max-width: 450px;
+                    margin: 2rem auto;
+                    animation: slideUp 0.5s ease-out;
+                }
+        
+                .auth-tabs {
+                    display: flex;
+                    margin-bottom: 1.5rem;
+                }
+        
+                .auth-tab {
+                    flex: 1;
+                    text-align: center;
+                    padding: 0.75rem 1rem;
+                    background-color: rgba(255, 255, 255, 0.6);
+                    cursor: pointer;
+                    font-weight: 500;
+                    transition: var(--transition);
+                }
+        
+                .auth-tab:first-child {
+                    border-top-left-radius: var(--border-radius);
+                    border-bottom-left-radius: var(--border-radius);
+                }
+        
+                .auth-tab:last-child {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+        
+        .auth-tab.active {
+            background-color: white;
+            color: var(--primary-color);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .auth-form .card {
+            margin-bottom: 0;
+        }
+        
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .auth-logo i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-logo h2 {
+            font-size: 1.75rem;
+            color: var(--dark-color);
+            margin: 0;
+        }
+        
+        .auth-logo p {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 0.25rem;
+        }
+        
+        /* Data Cards (Clients, Staff, Menu) */
+        .data-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background-color: white;
+            overflow: hidden;
+            transition: var(--transition);
+            margin-bottom: 1.25rem;
+        }
+        
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .data-card-header {
+            padding: 1.25rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-card-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .data-card-body {
+            padding: 1.25rem;
+        }
+        
+        .data-card-footer {
+            padding: 1rem 1.25rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        /* Menu Item */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .menu-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background-color: #f0f0f0;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+        }
+        
+        .menu-item-content {
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+        
+        .menu-item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 0 0.25rem;
+            color: var(--dark-color);
+        }
+        
+        .menu-item-description {
+            color: #777;
+            margin: 0;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .menu-item-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        /* Order Card */
+        .order-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .order-card-header {
+            padding: 1rem 1.25rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+        
+        .order-date {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        
+        .order-card-body {
+            padding: 1.25rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item-name {
+            font-weight: 500;
+        }
+        
+        .order-item-quantity {
+            color: #777;
+        }
+        
+        .order-item-price {
+            font-weight: 600;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .order-card-footer {
+            padding: 1rem 1.25rem;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Client & Staff Card */
+        .person-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        
+        .person-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .person-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            font-weight: 600;
+        }
+        
+        .person-info {
+            flex-grow: 1;
+        }
+        
+        .person-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 0 0.25rem;
+            color: var(--dark-color);
+        }
+        
+        .person-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .person-detail {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #777;
+        }
+        
+        .person-detail i {
+            margin-right: 0.4rem;
+            color: var(--primary-color);
+        }
+        
+        .person-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Search and Filters */
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input-group {
+            position: relative;
+            display: flex;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+            outline: none;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-option:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .filter-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .filter-option i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .empty-description {
+            color: #777;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .main-content.sidebar-active {
+                margin-left: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-wrap: wrap;
+            }
+            
+            .nav-menu {
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .menu-item-image {
+                margin-bottom: 1rem;
+            }
+            
+            .menu-item-price {
+                align-items: flex-start;
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+            
+            .person-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .person-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .person-details {
+                justify-content: center;
+            }
+            
+            .person-actions {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .modal-dialog {
+                max-width: 100%;
+                margin: 0 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .btn {
+                padding: 0.5rem 1rem;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-header > div:last-child {
+                margin-top: 0.5rem;
+                width: 100%;
+            }
+            
+            .order-card-header, .order-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .order-card-header > :nth-child(2), .order-card-footer > :nth-child(2) {
+                margin-top: 0.5rem;
+            }
+            
+            .auth-tabs {
+                flex-direction: column;
+            }
+            
+            .auth-tab:first-child, .auth-tab:last-child {
+                border-radius: 0;
+            }
+            
+            .auth-tab:first-child {
+                border-top-left-radius: var(--border-radius);
+                border-top-right-radius: var(--border-radius);
+            }
+            
+            .auth-tab:last-child {
+                border-bottom-left-radius: var(--border-radius);
+                border-bottom-right-radius: var(--border-radius);
+            }
+        }
+        </style>
+        <body>
+            <!-- Navbar -->
+            <nav class="navbar">
+                <div class="container navbar-container">
+                    <div class="logo">
+                        <i class="fas fa-utensils"></i>
+                        <span>Fusion Cuisine</span>
+                    </div>
+                    <button class="btn btn-light btn-icon" id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="nav-menu" id="nav-menu">
+                        <div id="auth-buttons">
+                            <button class="btn btn-light" id="login-btn">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Fusion Cuisine</h3>
+                </div>
+                <div class="sidebar-user" id="sidebar-user">
+                    <div class="sidebar-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="sidebar-username">Usuario</div>
+                        <div class="sidebar-role">Rol</div>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                    <a href="#clients" class="nav-link" data-section="clients">
+                        <i class="fas fa-users"></i>
+                        Clientes
+                    </a>
+                    <a href="#menu" class="nav-link" data-section="menu">
+                        <i class="fas fa-utensils"></i>
+                        Menú
+                    </a>
+                    <a href="#orders" class="nav-link" data-section="orders">
+                        <i class="fas fa-clipboard-list"></i>
+                        Pedidos
+                    </a>
+                    <a href="#staff" class="nav-link" data-section="staff">
+                        <i class="fas fa-user-tie"></i>
+                        Personal
+                    </a>
+                    <a href="#profile" class="nav-link" data-section="profile">
+                        <i class="fas fa-user-circle"></i>
+                        Mi Perfil
+                    </a>
+                    <a href="#jwt-info" class="nav-link" data-section="jwt-info">
+                        <i class="fas fa-key"></i>
+                        JWT Info
+                    </a>
+                    <a href="#" class="nav-link" id="logout-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </a>
+                </nav>
+            </div>
+        
+            <!-- Sidebar Overlay -->
+            <div class="overlay" id="overlay"></div>
+        
+            <!-- Main Content -->
+            <div class="main-content" id="main-content">
+                <div class="container">
+                    <!-- Auth Forms Container -->
+                    <div class="auth-container" id="auth-container">
+                        <div class="auth-tabs">
+                            <div class="auth-tab active" data-tab="login-form">Iniciar Sesión</div>
+                            <div class="auth-tab" data-tab="register-form">Registrarse</div>
+                        </div>
+        
+                        <!-- Login Form -->
+                        <div class="auth-form active" id="login-form">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="auth-logo">
+                                        <i class="fas fa-utensils"></i>
+                                        <h2>Fusion Cuisine</h2>
+                                        <p>Sistema de Gestión Gastronómica</p>
+                                    </div>
+                                    
+                                    <div id="login-alert"></div>
+                                    
+                                    <form id="login-form-element">
+                                        <div class="form-group">
+                                            <label class="form-label" for="login-username">Usuario o Email</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-user input-icon"></i>
+                                                <input type="text" class="form-control input-with-icon" id="login-username" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="login-password">Contraseña</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-lock input-icon"></i>
+                                                <input type="password" class="form-control input-with-icon" id="login-password" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group" style="display: none;">
+                                            <label class="form-label" for="recaptcha-token">reCAPTCHA Token</label>
+                                            <input type="text" class="form-control" id="recaptcha-token" value="dummy-token">
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary w-100 mt-2">
+                                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Register Form -->
+                        <div class="auth-form" id="register-form">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="auth-logo">
+                                        <i class="fas fa-utensils"></i>
+                                        <h2>Fusion Cuisine</h2>
+                                        <p>Crear Nueva Cuenta</p>
+                                    </div>
+                                    
+                                    <div id="register-alert"></div>
+                                    
+                                    <form id="register-form-element">
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-firstname">Nombre</label>
+                                            <input type="text" class="form-control" id="register-firstname" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-lastname">Apellido</label>
+                                            <input type="text" class="form-control" id="register-lastname" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-username">Nombre de usuario</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-user input-icon"></i>
+                                                <input type="text" class="form-control input-with-icon" id="register-username" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-email">Email</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-envelope input-icon"></i>
+                                                <input type="email" class="form-control input-with-icon" id="register-email" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-password">Contraseña</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-lock input-icon"></i>
+                                                <input type="password" class="form-control input-with-icon" id="register-password" required>
+                                            </div>
+                                            <small class="form-text">La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.</small>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="register-phone">Teléfono (opcional)</label>
+                                            <div class="input-group">
+                                                <i class="fas fa-phone input-icon"></i>
+                                                <input type="text" class="form-control input-with-icon" id="register-phone">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group" style="display: none;">
+                                            <label class="form-label" for="register-recaptcha-token">reCAPTCHA Token</label>
+                                            <input type="text" class="form-control" id="register-recaptcha-token" value="dummy-token">
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary w-100 mt-2">
+                                            <i class="fas fa-user-plus"></i> Registrarse
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Dashboard Section -->
+                    <section id="dashboard-section" class="d-none">
+                        <h1 class="mb-3">Dashboard</h1>
+                        
+                        <div id="dashboard-alert"></div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-value" id="client-count">0</div>
+                                <div class="stat-label">Clientes</div>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up trend-icon"></i> 5.3%
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="stat-value" id="dish-count">0</div>
+                                <div class="stat-label">Platos</div>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up trend-icon"></i> 3.2%
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="stat-value" id="order-count">0</div>
+                                <div class="stat-label">Pedidos</div>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up trend-icon"></i> 7.8%
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="stat-value" id="employee-count">0</div>
+                                <div class="stat-label">Empleados</div>
+                                <div class="stat-trend trend-down">
+                                    <i class="fas fa-arrow-down trend-icon"></i> 1.4%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-utensils"></i>
+                                            Platos Más Populares
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Plato</th>
+                                                        <th>Precio</th>
+                                                        <th>Ventas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="popular-dishes">
+                                                    <!-- Se rellenará con JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="fas fa-clipboard-list"></i>
+                                            Pedidos Recientes
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Cliente</th>
+                                                        <th>Fecha</th>
+                                                        <th>Total</th>
+                                                        <th>Estado</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="recent-orders">
+                                                    <!-- Se rellenará con JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+        
+                    <!-- Clients Section -->
+                    <section id="clients-section" class="d-none">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <h1>Clientes</h1>
+                            <button class="btn btn-primary" id="add-client-btn">
+                                <i class="fas fa-user-plus"></i> Nuevo Cliente
+                            </button>
+                        </div>
+                        
+                        <div id="clients-alert"></div>
+                        
+                        <div class="search-container">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" id="client-search" placeholder="Buscar clientes...">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-option active" data-filter="all">
+                                <i class="fas fa-filter"></i> Todos
+                            </div>
+                            <div class="filter-option" data-filter="recent">
+                                <i class="fas fa-clock"></i> Recientes
+                            </div>
+                            <div class="filter-option" data-filter="alphabetical">
+                                <i class="fas fa-sort-alpha-down"></i> Alfabético
+                            </div>
+                        </div>
+                        
+                        <div id="clients-container">
+                            <!-- Se rellenará con JavaScript -->
+                        </div>
+                    </section>
+        
+                    <!-- Menu Section -->
+                    <section id="menu-section" class="d-none">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <h1>Menú</h1>
+                            <button class="btn btn-primary" id="add-dish-btn">
+                                <i class="fas fa-plus"></i> Nuevo Plato
+                            </button>
+                        </div>
+                        
+                        <div id="menu-alert"></div>
+                        
+                        <div class="search-container">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" id="dish-search" placeholder="Buscar platos...">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-option active" data-filter="all">
+                                <i class="fas fa-filter"></i> Todos
+                            </div>
+                            <div class="filter-option" data-filter="price-asc">
+                                <i class="fas fa-sort-numeric-down"></i> Precio (Menor a Mayor)
+                            </div>
+                            <div class="filter-option" data-filter="price-desc">
+                                <i class="fas fa-sort-numeric-up"></i> Precio (Mayor a Menor)
+                            </div>
+                        </div>
+                        
+                        <div id="dishes-container">
+                            <!-- Se rellenará con JavaScript -->
+                        </div>
+                    </section>
+        
+                    <!-- Orders Section -->
+                    <section id="orders-section" class="d-none">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <h1>Pedidos</h1>
+                            <button class="btn btn-primary" id="add-order-btn">
+                                <i class="fas fa-plus"></i> Nuevo Pedido
+                            </button>
+                        </div>
+                        
+                        <div id="orders-alert"></div>
+                        
+                        <div class="search-container">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" id="order-search" placeholder="Buscar pedidos...">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-option active" data-filter="all">
+                                <i class="fas fa-filter"></i> Todos
+                            </div>
+                            <div class="filter-option" data-filter="pending">
+                                <i class="fas fa-clock"></i> Pendientes
+                            </div>
+                            <div class="filter-option" data-filter="completed">
+                                <i class="fas fa-check"></i> Completados
+                            </div>
+                            <div class="filter-option" data-filter="canceled">
+                                <i class="fas fa-times"></i> Cancelados
+                            </div>
+                        </div>
+                        
+                        <div id="orders-container">
+                            <!-- Se rellenará con JavaScript -->
+                        </div>
+                    </section>
+        
+                    <!-- Staff Section -->
+                    <section id="staff-section" class="d-none">
+                        <div class="d-flex justify-between align-center mb-3">
+                            <h1>Personal</h1>
+                            <button class="btn btn-primary" id="add-employee-btn">
+                                <i class="fas fa-user-plus"></i> Nuevo Empleado
+                            </button>
+                        </div>
+                        
+                        <div id="staff-alert"></div>
+                        
+                        <div class="search-container">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" id="employee-search" placeholder="Buscar empleados...">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-option active" data-filter="all">
+                                <i class="fas fa-filter"></i> Todos
+                            </div>
+                            <div class="filter-option" data-filter="position">
+                                <i class="fas fa-briefcase"></i> Por Cargo
+                            </div>
+                            <div class="filter-option" data-filter="salary-asc">
+                                <i class="fas fa-sort-numeric-down"></i> Salario (Menor a Mayor)
+                            </div>
+                            <div class="filter-option" data-filter="salary-desc">
+                                <i class="fas fa-sort-numeric-up"></i> Salario (Mayor a Menor)
+                            </div>
+                        </div>
+                        
+                        <div id="employees-container">
+                            <!-- Se rellenará con JavaScript -->
+                        </div>
+                    </section>
+        
+                    <!-- Profile Section -->
+                    <section id="profile-section" class="d-none">
+                        <h1 class="mb-3">Mi Perfil</h1>
+                        
+                        <div id="profile-alert"></div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user-circle"></i> Información Personal
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="profile-form">
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-firstname">Nombre</label>
+                                        <input type="text" class="form-control" id="profile-firstname" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-lastname">Apellido</label>
+                                        <input type="text" class="form-control" id="profile-lastname" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-username">Nombre de usuario</label>
+                                        <input type="text" class="form-control" id="profile-username" readonly>
+                                        <small class="form-text">El nombre de usuario no se puede cambiar.</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-email">Email</label>
+                                        <input type="email" class="form-control" id="profile-email" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-phone">Teléfono</label>
+                                        <input type="text" class="form-control" id="profile-phone">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="profile-position">Cargo</label>
+                                        <input type="text" class="form-control" id="profile-position">
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary mt-2">
+                                        <i class="fas fa-save"></i> Guardar Cambios
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-lock"></i> Cambiar Contraseña
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="password-form">
+                                    <div class="form-group">
+                                        <label class="form-label" for="current-password">Contraseña Actual</label>
+                                        <input type="password" class="form-control" id="current-password" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="new-password">Nueva Contraseña</label>
+                                        <input type="password" class="form-control" id="new-password" required>
+                                        <small class="form-text">La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label" for="confirm-password">Confirmar Contraseña</label>
+                                        <input type="password" class="form-control" id="confirm-password" required>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary mt-2">
+                                        <i class="fas fa-key"></i> Actualizar Contraseña
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+        
+                    <!-- JWT Info Section -->
+                    <section id="jwt-info-section" class="d-none">
+                        <h1 class="mb-3">Información JWT</h1>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-key"></i> JSON Web Token (JWT)
+                                </h3>
+                                <div>
+                                    <button class="btn btn-primary btn-sm" id="decode-token-btn">
+                                        <i class="fas fa-eye"></i> Decodificar Token
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3">
+                                    JWT es un estándar abierto (RFC 7519) que define una forma compacta y autosuficiente para transmitir información de forma segura entre partes como un objeto JSON.
+                                </p>
+                                
+                                <div class="jwt-token" id="jwt-token">
+                                    El token JWT se mostrará aquí...
+                                </div>
+                                
+                                <div class="jwt-parts" id="jwt-parts" style="display: none;">
+                                    <div class="jwt-part">
+                                        <div class="jwt-part-header header">
+                                            <i class="fas fa-file-code"></i> Header
+                                        </div>
+                                        <div class="jwt-part-content" id="jwt-header">
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="jwt-part">
+                                        <div class="jwt-part-header payload">
+                                            <i class="fas fa-file-alt"></i> Payload
+                                        </div>
+                                        <div class="jwt-part-content" id="jwt-payload">
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="jwt-part">
+                                        <div class="jwt-part-header signature">
+                                            <i class="fas fa-signature"></i> Signature
+                                        </div>
+                                        <div class="jwt-part-content" id="jwt-signature">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h4>¿Cómo funciona JWT?</h4>
+                                    <ol>
+                                        <li>El usuario envía sus credenciales (usuario/contraseña) al servidor.</li>
+                                        <li>El servidor verifica las credenciales y genera un token JWT firmado con una clave secreta.</li>
+                                        <li>El token se devuelve al cliente y se almacena (en este caso, en una cookie HTTP-only).</li>
+                                        <li>Para solicitudes posteriores, el token se envía automáticamente en cada petición.</li>
+                                        <li>El servidor verifica la firma del token y, si es válido, procesa la solicitud.</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h4>Ventajas de JWT</h4>
+                                    <ul>
+                                        <li><strong>Stateless:</strong> El servidor no necesita almacenar información sobre el token.</li>
+                                        <li><strong>Transmisión segura:</strong> El token está firmado, lo que garantiza que no ha sido alterado.</li>
+                                        <li><strong>Información embebida:</strong> El token contiene toda la información necesaria (como roles y permisos).</li>
+                                        <li><strong>Escalabilidad:</strong> Ideal para arquitecturas distribuidas y microservicios.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-shield-alt"></i> Prueba de endpoints protegidos
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <p>Prueba el acceso a diferentes endpoints protegidos según tu rol:</p>
+                                </div>
+                                
+                                <div class="d-flex gap-2 mb-3 flex-wrap">
+                                    <button class="btn btn-info" id="test-public-btn">
+                                        <i class="fas fa-globe"></i> Endpoint Público
+                                    </button>
+                                    <button class="btn btn-success" id="test-client-btn">
+                                        <i class="fas fa-user"></i> Endpoint Cliente
+                                    </button>
+                                    <button class="btn btn-warning" id="test-staff-btn">
+                                        <i class="fas fa-user-tie"></i> Endpoint Staff
+                                    </button>
+                                    <button class="btn btn-danger" id="test-admin-btn">
+                                        <i class="fas fa-user-shield"></i> Endpoint Admin
+                                    </button>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">
+                                            <i class="fas fa-terminal"></i> Resultado
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="endpoint-result" class="jwt-part-content">El resultado se mostrará aquí...</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        
+            <!-- Modals -->
+            
+            <!-- Client Modal -->
+            <div class="modal" id="client-modal">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="client-modal-title">Nuevo Cliente</h3>
+                        <button class="modal-close" id="client-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="client-modal-alert"></div>
+                        <form id="client-form">
+                            <input type="hidden" id="client-id">
+                            <div class="form-group">
+                                <label class="form-label" for="client-firstname">Nombre</label>
+                                <input type="text" class="form-control" id="client-firstname" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="client-lastname">Apellido</label>
+                                <input type="text" class="form-control" id="client-lastname" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="client-phone">Teléfono</label>
+                                <div class="input-group">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input type="text" class="form-control input-with-icon" id="client-phone">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="client-email">Email</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" class="form-control input-with-icon" id="client-email">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" id="client-cancel-btn">Cancelar</button>
+                        <button class="btn btn-primary" id="client-save-btn">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dish Modal -->
+            <div class="modal" id="dish-modal">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="dish-modal-title">Nuevo Plato</h3>
+                        <button class="modal-close" id="dish-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="dish-modal-alert"></div>
+                        <form id="dish-form">
+                            <input type="hidden" id="dish-id">
+                            <div class="form-group">
+                                <label class="form-label" for="dish-name">Nombre</label>
+                                <input type="text" class="form-control" id="dish-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="dish-description">Descripción</label>
+                                <textarea class="form-control" id="dish-description" rows="3" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="dish-price">Precio</label>
+                                <div class="input-group">
+                                    <i class="fas fa-dollar-sign input-icon"></i>
+                                    <input type="number" step="0.01" min="0" class="form-control input-with-icon" id="dish-price" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" id="dish-cancel-btn">Cancelar</button>
+                        <button class="btn btn-primary" id="dish-save-btn">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Modal -->
+            <div class="modal" id="order-modal">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="order-modal-title">Nuevo Pedido</h3>
+                        <button class="modal-close" id="order-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="order-modal-alert"></div>
+                        <form id="order-form">
+                            <input type="hidden" id="order-id">
+                            <div class="form-group">
+                                <label class="form-label" for="order-customer">Cliente</label>
+                                <select class="form-control" id="order-customer" required>
+                                    <option value="">Seleccionar cliente</option>
+                                    <!-- Se rellenará con JavaScript -->
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="order-status">Estado</label>
+                                <select class="form-control" id="order-status" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En Preparación">En Preparación</option>
+                                    <option value="Listo">Listo</option>
+                                    <option value="Entregado">Entregado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Platos</label>
+                                <div id="order-items">
+                                    <!-- Se rellenará con JavaScript -->
+                                </div>
+                                <button type="button" class="btn btn-light btn-sm mt-2" id="add-order-item-btn">
+                                    <i class="fas fa-plus"></i> Agregar Plato
+                                </button>
+                            </div>
+                            
+                            <div class="form-group text-right">
+                                <strong>Total: $<span id="order-total">0.00</span></strong>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" id="order-cancel-btn">Cancelar</button>
+                        <button class="btn btn-primary" id="order-save-btn">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Employee Modal -->
+            <div class="modal" id="employee-modal">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="employee-modal-title">Nuevo Empleado</h3>
+                        <button class="modal-close" id="employee-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="employee-modal-alert"></div>
+                        <form id="employee-form">
+                            <input type="hidden" id="employee-id">
+                            <div class="form-group">
+                                <label class="form-label" for="employee-firstname">Nombre</label>
+                                <input type="text" class="form-control" id="employee-firstname" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="employee-lastname">Apellido</label>
+                                <input type="text" class="form-control" id="employee-lastname" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="employee-position">Cargo</label>
+                                <input type="text" class="form-control" id="employee-position" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="employee-salary">Salario</label>
+                                <div class="input-group">
+                                    <i class="fas fa-dollar-sign input-icon"></i>
+                                    <input type="number" step="0.01" min="0" class="form-control input-with-icon" id="employee-salary" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" id="employee-cancel-btn">Cancelar</button>
+                        <button class="btn btn-primary" id="employee-save-btn">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Confirmation Modal -->
+            <div class="modal" id="delete-modal">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Confirmar Eliminación</h3>
+                        <button class="modal-close" id="delete-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="delete-message">¿Está seguro de que desea eliminar este elemento? Esta acción no se puede deshacer.</span>
+                        </div>
+                        <input type="hidden" id="delete-id">
+                        <input type="hidden" id="delete-type">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-light" id="delete-cancel-btn">Cancelar</button>
+                        <button class="btn btn-danger" id="delete-confirm-btn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+            <script src="app.js"></script>
+        </body>
+        </html>
